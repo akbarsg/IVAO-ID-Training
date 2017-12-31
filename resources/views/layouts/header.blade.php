@@ -23,10 +23,10 @@
             <div class="main-menu">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="index.html" >Home</a>
+                        <a href="/" >Home</a>
                     </li>
-                    <!-- <li><a href="about.html">IVAO ID</a></li>
-                    <li><a href="room">Training Room</a></li> -->
+                    <!-- <li><a href="about.html">IVAO ID</a></li> -->
+                    <li><a href="/training">Training!</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <span class="caret"></span></a>
                         <div class="dropdown-menu">
@@ -41,9 +41,9 @@
                     <!-- <li><a href="contact.html">Contact</a></li> -->
                     @if (Auth::guest())
                     <li><a href="{{ route('login') }}">Login</a></li>
-                    <li><a href="{{ route('register') }}">Register</a></li>
+                    <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                     @else
-                    <li><a href="{{ route('home') }}">Dashboard</a></li>
+                    <!-- <li><a href="{{ route('home') }}">Dashboard</a></li> -->
                     <li>
                         <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();

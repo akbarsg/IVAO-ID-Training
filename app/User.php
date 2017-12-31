@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'vid', 'password',
+        'name', 'email', 'vid', 'password', 'atc_rating_id', 'pilot_rating_id', 'isStaff', 'status',
     ];
 
     /**
@@ -26,4 +26,29 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function requests()
+    {
+        return $this->hasMany('App\RequestModel');
+    }
+
+    public function trainings()
+    {
+        return $this->hasMany('App\Training');
+    }
+
+    public function atcrating()
+    {
+        return $this->belongsTo('App\AtcRating', 'atc_rating_id');
+    }
+
+    public function pilotrating()
+    {
+        return $this->belongsTo('App\PilotRating', 'pilot_rating_id');
+    }
+
+    public static function getByVID($vid){
+        return User::where('vid', $vid)
+               ->first();
+    }
 }

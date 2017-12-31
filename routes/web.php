@@ -17,4 +17,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['middleware' => 'auth'], function () {
+	// Route::get('/home', 'TrainingController@requestForm');
+	Route::get('/training', 'TrainingController@requestForm');
+	Route::post('/training', 'TrainingController@storeRequest');
+	Route::get('/training/delete/{id}', 'TrainingController@deleteRequest');
+});
+
+Route::group(['middleware' => 'staff'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::post('/room/assignme', 'TrainingController@assignMe');
+});
