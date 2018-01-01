@@ -63,6 +63,8 @@
                           <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
                             <label>Next rating:</label>
                             <input type="text" placeholder="nextrating" disabled value="{{ $nextATCRating }} / {{ $nextPilotRating }}" class="form-control" name="nextrating" id="nextrating">
+                            <input type="hidden" name="atc_rating_id" value="{{ $nextATCRating }}">
+                            <input type="hidden" name="pilot_rating_id" value="{{ $nextPilotRating }}">
                           </div>
 
                           <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">

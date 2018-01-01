@@ -9,13 +9,14 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="/images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
-              <div class="profile_info" style="padding-top: 15px">
+              <div class="profile_info" style="padding-top: 20px">
                 <span>Welcome,</span>
                 <h2>{{ $user->name }}</h2>
               </div>
             </div>
+            <p style="margin-left: 5%; margin-right: 5%">{{ $user->atcrating->name }} / {{ $user->pilotrating->name }}</p>
             <!-- /menu profile quick info -->
 
             <br />
@@ -25,24 +26,19 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  <li><a href="/room"><i class="fa fa-home"></i> Home </a>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> Training <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.html">Member List</a></li>
-                      <li><a href="index2.html">Request List</a></li>
+                      <li><a href="/room/training/pending">Pending Request</a></li>
+                      <li><a href="/room/training/all">All Training</a></li>
+                      <li><a href="/room/training/mine">My Training</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> Trainer Management <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-desktop"></i> User <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="form.html">Assignment</a></li>
-                      <li><a href="form_advanced.html">Trainer Report</a></li>
-                      <li><a href="form_validation.html">Trainer on Duty</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-desktop"></i> Member Management <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="general_elements.html">History</a></li>
-                      <li><a href="media_gallery.html">Who's Ready?</a></li>
-                      <li><a href="typography.html">Who's Passed Exam?</a></li>
+                      <li><a href="/room/users">All User</a></li>
+                      <li><a href="/room/users">Staff Member</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> Schedule <span class="fa fa-chevron-down"></span></a>

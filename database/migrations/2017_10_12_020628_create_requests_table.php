@@ -18,6 +18,8 @@ class CreateRequestsTable extends Migration
             $table->integer('trainee_id')->unsigned();
             $table->string('email');
             $table->integer('type')->unsigned();
+            $table->integer('atc_rating_id')->unsigned();
+            $table->integer('pilot_rating_id')->unsigned();
             $table->dateTime('training_time');
             $table->string('note');
             $table->integer('status')->default(0)->unsigned();
@@ -25,6 +27,12 @@ class CreateRequestsTable extends Migration
 
             $table->foreign('trainee_id')
                 ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('atc_rating_id')
+                ->references('id')->on('atc_ratings')
+                ->onDelete('cascade');
+            $table->foreign('pilot_rating_id')
+                ->references('id')->on('pilot_ratings')
                 ->onDelete('cascade');
         });
     }

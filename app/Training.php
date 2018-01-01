@@ -19,4 +19,9 @@ class Training extends Model
     {
         return $this->belongsTo('App\RequestModel', 'request_id');
     }
+
+    public function history()
+    {
+        return $this->hasOne('App\History');
+    }
 }

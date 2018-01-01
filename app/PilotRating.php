@@ -31,4 +31,9 @@ class PilotRating extends Model
             'pilot_rating_id', 'trainee_id', 'id'
         );
     }
+
+    // public function request()
+    // {
+    //     return $this->hasMany('App\RequestModel');
+    // }
 }

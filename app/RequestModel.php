@@ -9,7 +9,7 @@ class RequestModel extends Model
     protected $table = 'requests';
 
     protected $fillable = [
-        'trainee_id', 'training_time', 'type', 'note', 'status',
+        'trainee_id', 'training_time', 'type', 'note', 'status', 'atc_rating_id', 'pilot_rating_id',
     ];
 
     public function user()
@@ -31,5 +31,13 @@ class RequestModel extends Model
     //     $request->save();
     // }
 
-    
+    public function atcRating()
+    {
+        return $this->belongsTo('App\AtcRating', 'atc_rating_id');
+    }
+
+    public function pilotRating()
+    {
+        return $this->belongsTo('App\PilotRating', 'pilot_rating_id');
+    }
 }

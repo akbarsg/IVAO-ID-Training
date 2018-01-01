@@ -42,7 +42,16 @@ class HomeController extends Controller
         // $tstaffs = User::where('isStaff', 1)
         //             ->count();
         $tstaffs = 6;
+
+        $mytrainings = Training::where('trainer_id', $user->id)
+                        ->get();
+        // $mytrainings = DB::table('trainings')
+        //     ->leftJoin('requests', 'trainings.request_id', '=', 'requests.id')
+        //     ->where('status', 1)
+        //     ->where('trainer_id', $user->id)
+        //     ->get();
+            // dd($mytrainings);
         // dd($requests[0]->user->name);
-        return view('room.home', ['user' => $user, 'requests' => $requests, 'trainings' => $trainings, 'pending' => $pending, 'upcoming' => $upcoming, 'completed' => $completed, 'tstaffs' => $tstaffs]);
+        return view('room.home', ['user' => $user, 'requests' => $requests, 'trainings' => $trainings, 'pending' => $pending, 'upcoming' => $upcoming, 'completed' => $completed, 'tstaffs' => $tstaffs, 'mytrainings' => $mytrainings]);
     }
 }

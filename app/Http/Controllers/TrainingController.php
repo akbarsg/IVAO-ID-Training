@@ -11,6 +11,7 @@ use App\User;
 use App\AtcRating;
 use App\PilotRating;
 use App\Training;
+use App\History;
 
 class TrainingController extends Controller
 {
@@ -67,6 +68,8 @@ class TrainingController extends Controller
 		$requestModel->trainee_id = Auth::user()->id;
 		$requestModel->email = $request->email;
 		$requestModel->type = $request->type;
+		$requestModel->atc_rating_id = $request->atc_rating_id;
+		$requestModel->pilot_rating_id = $request->pilot_rating_id;
 		$requestModel->training_time = $request->training_time;
 		$requestModel->note = $request->note;
 		$requestModel->save();
@@ -92,5 +95,64 @@ class TrainingController extends Controller
         $training->save();
 
         return back()->with('success','You just assign yourself as the trainer!');
+	}
+
+	public function unassignMe($id)
+	{
+		$request_id = Training::find($id)->request_id;
+		// dd($request_id);
+
+		$requestModel = RequestModel::find($request_id);
+		$requestModel->status = 0;
+		$requestModel->save();
+
+		Training::destroy($id);
+
+        return back()->with('success','You just unassign yourself from the training request.');
+	}
+
+	public function complete(Request $request)
+	{
+		$request_id = Training::find($request->training_id)
+						->request
+						->id;
+
+		$requestModel = RequestModel::find($request_id);
+		$requestModel->status = 3;
+		$requestModel->save();
+
+		$history = new History;
+        $history->training_id = $request->training_id;
+        $history->description = $request->description;
+        $history->save();
+
+        return back()->with('success','The training has been completed!');
+	}
+
+	public function showAll()
+	{
+		$trainings = Training::all();
+		$user = Auth::user();
+
+		return view('room.traininglist', ['trainings' => $trainings, 'user' => $user]);
+	}
+
+	public function showMine()
+	{
+		
+		$user = Auth::user();
+		$trainings = Training::where('trainer_id', $user->id)->get();
+
+		return view('room.traininglist', ['trainings' => $trainings, 'user' => $user]);
+	}
+
+	public function showPending()
+	{
+		$requests = RequestModel::all()
+                    ->where('status', '!=', 1)
+                    ->where('status', '!=', 3);
+		$user = Auth::user();
+
+		return view('room.trainingpendinglist', ['requests' => $requests, 'user' => $user]);
 	}
 }

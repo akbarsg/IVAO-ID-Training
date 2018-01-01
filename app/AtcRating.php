@@ -31,4 +31,9 @@ class AtcRating extends Model
             'atc_rating_id', 'trainee_id', 'id'
         );
     }
+
+    // public function request()
+    // {
+    //     return $this->hasMany('App\RequestModel');
+    // }
 }
