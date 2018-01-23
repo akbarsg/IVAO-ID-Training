@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+// use App\MyBroker;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -59,6 +60,9 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
+
+        // $broker = new MyBroker();
+        // $broker->loginCurrentUser();
 
         return redirect()->guest(route('login'));
     }

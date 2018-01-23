@@ -21,7 +21,7 @@ class CreateRequestsTable extends Migration
             $table->integer('atc_rating_id')->unsigned();
             $table->integer('pilot_rating_id')->unsigned();
             $table->dateTime('training_time');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->integer('status')->default(0)->unsigned();
             $table->timestamps();
 

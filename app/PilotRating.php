@@ -14,14 +14,18 @@ class PilotRating extends Model
 
     public static function getNextRating()
     {
+        if(Auth::user()->pilot_rating_id == 10){
+            return PilotRating::find(10);
+        }
         return PilotRating::find((Auth::user()->pilot_rating_id) + 1);
-        //not yet checked where user rating is highest
     }
 
     public static function getNextRatingByRating($id)
     {
+        if ($id == 10) {
+            return PilotRating::find($id);
+        }
         return PilotRating::find($id + 1);
-        //not yet checked where user rating is highest
     }
 
     public function requests()

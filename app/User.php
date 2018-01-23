@@ -47,6 +47,7 @@ class User extends Authenticatable
         return $this->belongsTo('App\PilotRating', 'pilot_rating_id');
     }
 
+
     public static function getByVID($vid){
         return User::where('vid', $vid)
                ->first();

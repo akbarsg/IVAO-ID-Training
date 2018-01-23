@@ -285,13 +285,13 @@
                       </td>
                       <td>
                         @if($request->type == 1)
-                        @if($nextRating->id <= $user->atc_rating_id)
+                        @if($nextRating->id <= $user->atc_rating_id && $request->trainee_id != $user->id)
                         <label class="label label-success">You're suitable</label>
                         @else
                         <label class="label label-danger">You're not suitable</label>
                         @endif
                         @else
-                        @if($nextRating->id <= $user->pilot_rating_id)
+                        @if($nextRating->id <= $user->pilot_rating_id && $request->trainee_id != $user->id)
                         <label class="label label-success">You're suitable</label>
                         @else
                         <label class="label label-danger">You're not suitable</label>
@@ -446,7 +446,6 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                              <!-- <a href="/room/training/cancel/{{ $mytraining->id }}" class="btn btn-danger">Yes, unassign me from this training!</a> -->
 
                             </div>
                           </div>
@@ -456,7 +455,6 @@
                       @endforeach
                     </tbody>
                   </table>
-                  <!-- end project list -->
 
                 </div>
               </div>
@@ -531,13 +529,13 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 @if($request->type == 1)
-                @if($nextRating->id <= $user->atc_rating_id)
+                @if($nextRating->id <= $user->atc_rating_id && $request->trainee_id != $user->id)
                 <button type="submit" class="btn btn-success">Assign me as the trainer!</button>
                 @else
                 <a class="btn btn-danger disabled">You're not suitable for this request!</a>
                 @endif
                 @else
-                @if($nextRating->id <= $user->pilot_rating_id)
+                @if($nextRating->id <= $user->pilot_rating_id && $request->trainee_id != $user->id)
                 <button type="submit" class="btn btn-success">Assign me as the trainer!</button>
                 @else
                 <a class="btn btn-danger disabled">You're not suitable for this request!</a>

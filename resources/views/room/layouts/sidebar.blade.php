@@ -38,32 +38,32 @@
                   <li><a><i class="fa fa-desktop"></i> User <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/room/users">All User</a></li>
-                      <li><a href="/room/users">Staff Member</a></li>
+                      <li><a href="/room/profile/{{ $user->id }}">My Profile</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> Schedule <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="tables.html">Training Day</a></li>
-                      <li><a href="tables_dynamic.html">Member's Requested</a></li>
-            <li><a href="typography.html">Event</a></li>
+                      <li><a href="#">Training Day</a></li>
+                      <li><a href="#">Member's Requested</a></li>
+                      <li><a href="#">Event</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i> Publication <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="chartjs.html">News Management</a></li>
-                      <li><a href="chartjs2.html">Released Report</a></li>
-                      <li><a href="morisjs.html">Broadcast</a></li>
+                      <li><a href="#">News Management</a></li>
+                      <li><a href="#">Released Report</a></li>
+                      <li><a href="#">Broadcast</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-clone"></i>Documentations <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="fixed_sidebar.html">Documentation Management</a></li>
+                      <li><a href="#">Documentation Management</a></li>
                     </ul>
                   </li>
                 </ul>
               </div>
-              <div class="menu_section">
-                <span class="label label-success pull-right">Only Webmaster!</span></a></li><h3>Webmaster</h3>
+              <!-- <div class="menu_section">
+                <span class="label label-success pull-right">Only Webmaster!</span><h3>Webmaster</h3>
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-bug"></i> Main Website <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -96,7 +96,7 @@
                     </ul>
                   </li>              
                 </ul>
-              </div>
+              </div> -->
 
             </div>
             <!-- /sidebar menu -->

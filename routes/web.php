@@ -23,12 +23,16 @@ Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/home', 'TrainingController@requestForm');
 	Route::get('/training', 'TrainingController@requestForm');
 	Route::post('/training', 'TrainingController@storeRequest');
+	Route::get('/dashboard', 'TrainingController@dashboard');
 	Route::get('/training/delete/{id}', 'TrainingController@deleteRequest');
+
+    Route::get('/sendmail', 'TesMailController@send2');
 });
 
 Route::group(['middleware' => 'staff'], function () {
     Route::get('/room', 'HomeController@index')->name('home');
     Route::post('/room/assignme', 'TrainingController@assignMe');
+    Route::post('/room/request/delete/{id}', 'TrainingController@deleteRequest');
     Route::post('/room/training/complete', 'TrainingController@complete');
     Route::get('/room/training/cancel/{id}', 'TrainingController@unassignMe');
     Route::get('/room/training/all', 'TrainingController@showAll');
@@ -36,4 +40,8 @@ Route::group(['middleware' => 'staff'], function () {
     Route::get('/room/training/pending', 'TrainingController@showPending');
     Route::get('/room/users', 'UserController@showAll');
     Route::get('/room/profile/{id}', 'UserController@show');
+    // Route::get('/room/profile/{id}', 'HomeController@index');
+
+    Route::get('/room/notification/markread/all', 'NotificationController@readAll');
+    Route::get('/room/notification/markread/{id}', 'NotificationController@read');
 });

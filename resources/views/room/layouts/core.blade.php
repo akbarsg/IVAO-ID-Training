@@ -18,6 +18,11 @@
     <!-- bootstrap-daterangepicker -->
     <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="/build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -67,6 +72,30 @@
 
     <!-- Custom Theme Scripts -->
     <script src="/build/js/custom.min.js"></script>
-	
+
+    <!-- PNotify -->
+    <script src="/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    @if ($errors->any())
+    @foreach ($errors->all() as $error)
+    <script type="text/javascript">
+        
+        $(window).load(function() {
+
+            new PNotify({
+                                  title: 'Error!',
+
+                                  text: '{{ $error }}',
+                                  type: 'error',
+                                  styling: 'bootstrap3'
+                              });
+        });
+
+        
+    </script>
+    @endforeach
+    @endif
   </body>
 </html>

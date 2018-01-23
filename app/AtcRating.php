@@ -14,14 +14,18 @@ class AtcRating extends Model
 
     public static function getNextRating()
     {
+        if(Auth::user()->pilot_rating_id == 10){
+            return AtcRating::find(10);
+        }
         return AtcRating::find((Auth::user()->atc_rating_id) + 1);
-        //not yet checked where user rating is highest
     }
 
     public static function getNextRatingByRating($id)
     {
+        if ($id == 10) {
+            return AtcRating::find($id);
+        }
         return AtcRating::find($id + 1);
-        //not yet checked where user rating is highest
     }
 
     public function requests()

@@ -17,7 +17,7 @@ class CheckStaff
     public function handle($request, Closure $next)
     {
         if (Auth::user()->isStaff != 1) {
-            return redirect('/');
+            return redirect('/dashboard');
         }
         return $next($request);
     }

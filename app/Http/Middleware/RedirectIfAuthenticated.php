@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+// use App\MyBroker;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,9 @@ class RedirectIfAuthenticated
         if (Auth::guard($guard)->check()) {
             return redirect('/home');
         }
+
+        // $broker  =new MyBroker();
+        // $broker->loginCurrentUser();
 
         return $next($request);
     }

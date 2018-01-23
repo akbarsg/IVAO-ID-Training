@@ -19,7 +19,7 @@ class RequestModel extends Model
 
     public function training()
     {
-        return $this->hasOne('App\Training');
+        return $this->hasOne('App\Training', 'request_id');
     }
 
     // public static function storeNewRequest(Request $request)

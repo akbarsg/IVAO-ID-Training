@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->integer('atc_rating_id')->default(2)->unsigned();
             $table->integer('pilot_rating_id')->default(2)->unsigned();
             $table->integer('isStaff')->default(0)->unsigned();
+            $table->string('division');
+            $table->string('staff')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
