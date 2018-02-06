@@ -17,7 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
+Route::get('/atc', function () {
+    return view('atc');
+});
+Route::get('/pilot', function () {
+    return view('pilot');
+});
 
 Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/home', 'TrainingController@requestForm');
@@ -30,17 +35,20 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'staff'], function () {
-    Route::get('/room', 'HomeController@index')->name('home');
+    Route::get('/room', 'HomeController@staff')->name('home');
+    Route::post('/room/staffemail', 'UserController@setstaffemail');
     Route::post('/room/assignme', 'TrainingController@assignMe');
-    Route::post('/room/request/delete/{id}', 'TrainingController@deleteRequest');
+    Route::get('/room/request/delete/{id}', 'TrainingController@deleteRequest');
+    Route::get('/room/training/delete/{id}', 'TrainingController@deleteTraining');
     Route::post('/room/training/complete', 'TrainingController@complete');
     Route::get('/room/training/cancel/{id}', 'TrainingController@unassignMe');
     Route::get('/room/training/all', 'TrainingController@showAll');
     Route::get('/room/training/mine', 'TrainingController@showMine');
     Route::get('/room/training/pending', 'TrainingController@showPending');
     Route::get('/room/users', 'UserController@showAll');
+    Route::get('/room/users/assignasstaff/{id}', 'UserController@assignasstaff');
+    Route::get('/room/users/unassignasstaff/{id}', 'UserController@unassignasstaff');
     Route::get('/room/profile/{id}', 'UserController@show');
-    // Route::get('/room/profile/{id}', 'HomeController@index');
 
     Route::get('/room/notification/markread/all', 'NotificationController@readAll');
     Route::get('/room/notification/markread/{id}', 'NotificationController@read');

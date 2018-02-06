@@ -10,7 +10,7 @@
                     <div class="col-md-12">
                         <div class="block">
                             <h2>Training Request</h2>
-                            <ol class="breadcrumb">
+                            <!-- <ol class="breadcrumb">
                                 <li>
                                     <a href="index.html">
                                         <i class="ion-ios-home"></i>
@@ -18,7 +18,7 @@
                                     </a>
                                 </li>
                                 <li class="active">Request</li>
-                            </ol>
+                            </ol> -->
                         </div>
                     </div>
                 </div>
@@ -47,11 +47,13 @@
                           }
 
                           $pendingRequest = '';
-                          $newRequest = $request->where('status', 0)->orWhere('status', 1);
+                          $newRequest = App\RequestModel::where('trainee_id', Auth::user()->id)->where('status', '<=', 1)->whereNull('deleted_at')->get();
 
                           if($newRequest->count() > 0){
+                          
                             $pendingRequest = $newRequest->first();
                           }
+
                       @endphp
                       
                       @if($pendingRequest != '' && $newRequest->count() > 1)
@@ -75,7 +77,7 @@
                           </div>
                       @endif
                       <div class="contact-form">
-                        <form id="contact-form" method="post" action="/training" role="form">
+                        <form id="request-form" method="post" action="/training" role="form">
                           
                           <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".1s">
                             <label>VID:</label>
@@ -97,7 +99,7 @@
 
                           <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".1s">
                             <label>Email:</label>
-                            <input type="email" placeholder="Email" class="form-control" name="email" id="email" value="{{ $email }}" @if($request->count() > 0) readonly @endif>
+                            <input type="email" placeholder="Email" class="form-control" name="email" id="email" value="{{ $email }}" @if($email !== '') readonly @endif>
                           </div>
 
                           <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".1s">
@@ -128,7 +130,7 @@
 
 
                           <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".1s">
-                            <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="Request">
+                            <input type="submit" id="request-submit" class="btn btn-default btn-send" value="Request">
                           </div>                      
 
                         </form>

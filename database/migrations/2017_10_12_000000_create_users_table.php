@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->integer('isStaff')->default(0)->unsigned();
             $table->string('division');
             $table->string('staff')->nullable();
+            $table->string('staff_email')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

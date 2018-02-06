@@ -33,6 +33,10 @@
         <link rel="stylesheet" href="css/main.css">
         <!-- responsive css -->
         <link rel="stylesheet" href="css/responsive.css">
+
+        <link href="/vendors/pnotify/dist/pnotify.custom.min.css" rel="stylesheet">
+
+        <link href="/css/pace-theme-corner-indicator.css" rel="stylesheet" />
         
         <!-- Template Javascript Files
         ================================================== -->
@@ -52,6 +56,8 @@
         <script src="js/jquery.fancybox.js"></script>
         <!-- template main js -->
         <script src="js/main.js"></script>
+        <script src="/vendors/pnotify/dist/pnotify.custom.min.js"></script>
+        <script src="/js/pace.min.js"></script>
     </head>
     <body>
         @include('layouts.header')
@@ -59,6 +65,40 @@
         @yield('content')
             
             @include('layouts.footer')
+
+        @if(session('success'))
+        <script type="text/javascript">
+            $(window).load(function() {
+                new PNotify({
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    type: 'success'
+                });
+            });
+
+
+        </script>
+        @endif
+
+        @if(session('error'))
+        <script type="text/javascript">
+            $(window).load(function() {
+                new PNotify({
+                    title: 'Error!',
+                    text: '{{ session('error') }}',
+                    type: 'error'
+                });
+        </script>
+        @endif
+
+        <script type="text/javascript">
+            $('#request-form').submit(function() {
+                $('body').removeClass("pace-done");
+                $('body').addClass("pace-running");
+                $('div:first').removeClass("pace-inactive");
+                $('div:first').addClass("pace-active");
+            });
+        </script>
                 
         </body>
     </html>

@@ -9,26 +9,11 @@
 				<div class="x_panel">
 					<div class="x_title">
 						<h2>Trainings</h2>
-						<ul class="nav navbar-right panel_toolbox">
-							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">Settings 1</a>
-									</li>
-									<li><a href="#">Settings 2</a>
-									</li>
-								</ul>
-							</li>
-							<li><a class="close-link"><i class="fa fa-close"></i></a>
-							</li>
-						</ul>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 
-						<!-- <p>Latest training sessions. You can check out member training logs here.</p> -->
+						<p>You can check member training logs here.</p>
 
 						<table class="table table-striped projects">
 							<thead>
@@ -87,9 +72,9 @@
 										<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".viewtraining{{ $training->id }}"><i class="fa fa-folder"></i> View </a>
 
 										<!-- <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a> -->
-										@if($training->trainer_id == $user->id && $training->request->status != 3)
-										<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-										@endif
+										
+										<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".deletetraining{{ $training->id }}"><i class="fa fa-trash-o"></i> Delete </a>
+										
 									</td>
 								</tr>
 
@@ -131,6 +116,28 @@
 										</div>
 									</div>
 								</div>
+
+								<div class="modal fade bs-example-modal-lg deletetraining{{ $training->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+			                        <div class="modal-dialog modal-lg">
+			                          <div class="modal-content">
+
+			                              <div class="modal-header">
+			                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+			                                </button>
+			                                <h4 class="modal-title" id="myModalLabel">Delete the Training</h4>
+			                              </div>
+			                              <div class="modal-body">
+			                                <h4>Are you sure to delete this training?</h4>
+			                                <p>This action is irreversible.</p>
+			                              </div>
+			                              <div class="modal-footer">
+			                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			                                <a href="/room/training/delete/{{ $training->id }}" class="btn btn-danger">Yes, delete this training!</a>
+
+			                              </div>
+			                            </div>
+			                          </div>
+			                        </div>
 
 								@endforeach
 							</tbody>

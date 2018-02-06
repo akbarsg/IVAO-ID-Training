@@ -97,7 +97,7 @@
 									<td>
 										<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".view{{ $request->id }}"><i class="fa fa-folder"></i> View </a>
 										<!-- <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a> -->
-										<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+										<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".delete{{ $request->id }}"><i class="fa fa-trash-o"></i> Delete </a>
 									</td>
 								</tr>
 								<div id="view{{ $request->id }}" class="modal fade" role="dialog">
@@ -195,6 +195,28 @@
 
 						</div>
 					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade bs-example-modal-lg delete{{ $request->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Delete the Request</h4>
+					</div>
+					<div class="modal-body">
+						<h4>Are you sure to delete this request?</h4>
+						<p>This action is irreversible.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<a href="/room/request/delete/{{ $request->id }}" class="btn btn-danger">Yes, delete this request!</a>
+
+					</div>
 				</div>
 			</div>
 		</div>

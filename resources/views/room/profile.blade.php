@@ -46,18 +46,20 @@
           <div class="x_content">
             <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
 
-              <h3>{{ $profile->name }} <small>({{ $profile->vid }})</small></h3>
-
+              <h3><a href="https://www.ivao.aero/Member.aspx?Id={{ $profile->vid }}" target="_blank">{{ $profile->name }} <small>({{ $profile->vid }})</small></a></h3>
+              <img src="{{ $profile->atcrating->image }}" alt="{{ $profile->atcrating->name }}" data-toggle="tooltip" title="{{ $profile->atcrating->name }}"> <img src="{{ $profile->pilotrating->image }}" alt="{{ $profile->pilotrating->name }}" data-toggle="tooltip" title="{{ $profile->pilotrating->name }}">
+              <br><br>
               <ul class="list-unstyled user_data">
                 <li><i class="fa fa-microphone user-profile-icon"></i> {{ $profile->atcrating->name }}
                 </li>
-
                 <li>
                   <i class="fa fa-plane user-profile-icon"></i> {{ $profile->pilotrating->name }}
                 </li>
-
                 <li class="m-top-xs">
                   <i class="fa fa-sign-in user-profile-icon"></i> {{ $profile->created_at }}
+                </li>
+                <li>
+                  <i class="fa fa-envelope user-profile-icon"></i> <a href="mailto:{{ $profile->email }}">{{ $profile->email }}</a>
                 </li>
               </ul>
 
@@ -103,7 +105,7 @@
                         <th>Training Type</th>
                         <th>Requested Time</th>
                         <th>Completed Time</th>
-                        <th>Suitability</th>
+                        <!-- <th>Suitability</th> -->
                         <th>Status</th>
                         <th style="width: 20%">Options</th>
                       </tr>
@@ -138,7 +140,7 @@
                             -
                           @endif
                         </td>
-                        <td>
+                        <!-- <td>
                           @if($request->status == 0)
                           @if($request->type == 1)
                           @if($nextRating->id <= $user->atc_rating_id)
@@ -160,7 +162,7 @@
                           <label class="label label-default">Assigned</label>
                           @endif
                           @endif
-                        </td>
+                        </td> -->
                         <td>
 
                           @if($request->status == 1)
@@ -187,147 +189,12 @@
                           @if($request->status == 0)
                           <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".deleterequest{{ $request->id }}"><i class="fa fa-trash-o"></i> Delete </a>
                           @elseif($request->status == 1 && $request->training->trainer_id == $user->id)
-                          <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".canceltraining{{ $request->id }}"><i class="fa fa-trash-o"></i> Cancel </a>
+                          <!-- <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".canceltraining{{ $request->id }}"><i class="fa fa-trash-o"></i> Cancel </a> -->
                           @endif
                         </td>
                       </tr>
 
-                      @if($request->status == 0)
-
-                      <div class="modal fade bs-example-modal-lg viewrequest{{ $request->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-
-                            <form action="/room/assignme" method="post">
-                              {{ csrf_field() }}
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Request Details</h4>
-                              </div>
-                              <div class="modal-body">
-
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Name:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <b><a href="/room/profile/{{ $request->user->id }}">{{ $request->user->name }} ({{ $request->user->vid }})</a></b>
-                                    <input type="hidden" name="request_id" value="{{ $request->id }}">
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Recent Rating:
-                                  </div>
-                                  <div class="col-md-9">
-                                    {{ $request->user->atcrating->name }} / {{ $request->user->pilotrating->name }}
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Email:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <a href="{{ $request->email }}">{{ $request->email }}</a>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Training Type:
-                                  </div>
-                                  <div class="col-md-9">
-                                    @if($request->type == 1)
-                                    @php
-                                    $nextRating = App\AtcRating::getNextRatingByRating($request->user->atc_rating_id)
-                                    @endphp
-                                    ATC (<b>{{ $nextRating->name }}</b>)
-                                    @else
-                                    @php
-                                    $nextRating = App\PilotRating::getNextRatingByRating($request->user->pilot_rating_id)
-                                    @endphp
-                                    Pilot (<b>{{ $nextRating->name }}</b>)
-                                    @endif
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Proposed Training Time:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <b>{{ $request->training_time }}z</b>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Trainee Message:
-                                  </div>
-                                  <div class="col-md-9">
-                                    {{ $request->note }}
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Your Message:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <textarea class="form-control" rows="3" placeholder='You may specify the training details here...' name="note"></textarea>
-                                  </div>
-                                </div>
-
-
-
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                @if($request->type == 1)
-                                @if($nextRating->id <= $user->atc_rating_id)
-                                <button type="submit" class="btn btn-success">Assign me as the trainer!</button>
-                                @else
-                                <a class="btn btn-danger disabled">You're not suitable for this request!</a>
-                                @endif
-                                @else
-                                @if($nextRating->id <= $user->pilot_rating_id)
-                                <button type="submit" class="btn btn-success">Assign me as the trainer!</button>
-                                @else
-                                <a class="btn btn-danger disabled">You're not suitable for this request!</a>
-                                @endif
-                                @endif
-
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="modal fade bs-example-modal-lg deleterequest{{ $request->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-
-
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                              </button>
-                              <h4 class="modal-title" id="myModalLabel">Delete Request</h4>
-                            </div>
-                            <div class="modal-body">
-
-                              <h4>Are you sure to delete this training request?</h4>
-                              <p>This action cannot be reversible!</p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                              <a href="/room/request/delete/{{ $request->id }}" class="btn btn-danger">Yes, delete this request!</a>
-
-
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </div>
-
-                      @elseif($request->status == 3)
+                      
 
                       <div class="modal fade bs-example-modal-lg viewtraining{{ $request->training->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -368,8 +235,7 @@
                         </div>
                       </div>
 
-                      @endif
-
+                      
                       
 
                       @endforeach
@@ -402,212 +268,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @if($profile->isStaff != 1)
-                      @foreach($requests as $request)
-                      @if($request->status == 3)
-                      @continue
-                      @endif
-                      <tr>
-
-                        <td>
-
-                          -
-                        </td>
-                        <td>
-                          @if($request->type == 1)
-                          @php
-                          $nextRating = App\AtcRating::getNextRatingByRating($request->user->atc_rating_id)
-                          @endphp
-                          ATC ({{ $nextRating->name }})
-                          @else
-                          @php
-                          $nextRating = App\PilotRating::getNextRatingByRating($request->user->pilot_rating_id)
-                          @endphp
-                          Pilot ({{ $nextRating->name }})
-                          @endif
-                        </td>
-                        <td>
-                          {{ $request->created_at }}
-                        </td>
-                        <td>
-                          -
-                        </td>
-                        <td>
-                          @if($request->type == 1)
-                          @if($nextRating->id <= $user->atc_rating_id)
-                          <label class="label label-success">You're suitable</label>
-                          @else
-                          <label class="label label-danger">You're not suitable</label>
-                          @endif
-                          @else
-                          @if($nextRating->id <= $user->pilot_rating_id)
-                          <label class="label label-success">You're suitable</label>
-                          @else
-                          <label class="label label-danger">You're not suitable</label>
-                          @endif
-                          @endif
-                        </td>
-                        <td>
-
-                          @if($request->status == 1)
-                          <label class="label label-success">Assigned</label>
-                          @elseif($request->status == 2)
-                          <label class="label label-danger">Refused</label>
-                          @elseif($request->status == 3)
-                          <label class="label label-primary">Completed</label>
-                          @else
-                          <label class="label label-warning">Pending</label>
-                          @endif
-
-                        </td>
-                        <td>
-
-                          <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".viewrequest{{ $request->id }}"><i class="fa fa-folder"></i> View </a>
-
-                          @if($request->status == 0)
-                          <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".deleterequest{{ $request->id }}"><i class="fa fa-trash-o"></i> Delete </a>
-                          @elseif($request->status == 1 && $request->training->trainer_id == $user->id)
-                          <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".canceltraining{{ $request->id }}"><i class="fa fa-trash-o"></i> Cancel </a>
-                          @endif
-                        </td>
-                      </tr>
-
-                      <div class="modal fade bs-example-modal-lg viewrequest{{ $request->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-
-                            <form action="/room/assignme" method="post">
-                              {{ csrf_field() }}
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Request Details</h4>
-                              </div>
-                              <div class="modal-body">
-
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Name:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <b><a href="/room/profile/{{ $request->user->id }}">{{ $request->user->name }} ({{ $request->user->vid }})</a></b>
-                                    <input type="hidden" name="request_id" value="{{ $request->id }}">
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Recent Rating:
-                                  </div>
-                                  <div class="col-md-9">
-                                    {{ $request->user->atcrating->name }} / {{ $request->user->pilotrating->name }}
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Email:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <a href="{{ $request->email }}">{{ $request->email }}</a>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Training Type:
-                                  </div>
-                                  <div class="col-md-9">
-                                    @if($request->type == 1)
-                                    @php
-                                    $nextRating = App\AtcRating::getNextRatingByRating($request->user->atc_rating_id)
-                                    @endphp
-                                    ATC (<b>{{ $nextRating->name }}</b>)
-                                    @else
-                                    @php
-                                    $nextRating = App\PilotRating::getNextRatingByRating($request->user->pilot_rating_id)
-                                    @endphp
-                                    Pilot (<b>{{ $nextRating->name }}</b>)
-                                    @endif
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Proposed Training Time:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <b>{{ $request->training_time }}z</b>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Trainee Message:
-                                  </div>
-                                  <div class="col-md-9">
-                                    {{ $request->note }}
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    Your Message:
-                                  </div>
-                                  <div class="col-md-9">
-                                    <textarea class="form-control" rows="3" placeholder='You may specify the training details here...' name="note"></textarea>
-                                  </div>
-                                </div>
-
-
-
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                @if($request->type == 1)
-                                @if($nextRating->id <= $user->atc_rating_id)
-                                <button type="submit" class="btn btn-success">Assign me as the trainer!</button>
-                                @else
-                                <a class="btn btn-danger disabled">You're not suitable for this request!</a>
-                                @endif
-                                @else
-                                @if($nextRating->id <= $user->pilot_rating_id)
-                                <button type="submit" class="btn btn-success">Assign me as the trainer!</button>
-                                @else
-                                <a class="btn btn-danger disabled">You're not suitable for this request!</a>
-                                @endif
-                                @endif
-
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="modal fade bs-example-modal-lg deleterequest{{ $request->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-
-
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                              </button>
-                              <h4 class="modal-title" id="myModalLabel">Delete Request</h4>
-                            </div>
-                            <div class="modal-body">
-
-                              <h4>Are you sure to delete this training request?</h4>
-                              <p>This action cannot be reversible!</p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                              <a href="/room/request/delete/{{ $request->id }}" class="btn btn-danger">Yes, delete this request!</a>
-
-
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </div>
-
-                      @endforeach
-
-                      @endif
+                      
 
                       @if($trainings != '[]')
                       @foreach($trainings as $training)
@@ -647,7 +308,7 @@
 
                           @if($training->request->status == 1)
                           <label class="label label-success">Assigned</label>
-                          @elseif($request->status == 2)
+                          @elseif($training->request->status == 2)
                           <label class="label label-danger">Refused</label>
                           @elseif($training->request->status == 3)
                           <label class="label label-primary">Completed</label>
@@ -662,8 +323,8 @@
                           <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".viewtraining{{ $training->id }}"><i class="fa fa-folder"></i> View </a>
 
                           <!-- <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a> -->
-                          @if($training->trainer_id == $user->id && $request->status != 3)
-                          <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                          @if($training->trainer_id == $user->id && $training->request->status != 3)
+                          <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target=".deletetraining{{ $training->id }}"><i class="fa fa-trash-o"></i> Delete </a>
                           @endif
                         </td>
                       </tr>
@@ -706,6 +367,28 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="modal fade bs-example-modal-lg deletetraining{{ $training->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Delete the Training</h4>
+                              </div>
+                              <div class="modal-body">
+                                <h4>Are you sure to delete this training?</h4>
+                                <p>This action is irreversible.</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <a href="/room/training/delete/{{ $training->id }}" class="btn btn-danger">Yes, delete this training!</a>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
                       @endforeach
                       @endif

@@ -18,6 +18,7 @@ class CreateHistoriesTable extends Migration
             $table->integer('training_id')->unsigned();
             $table->string('description');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('training_id')
                 ->references('id')->on('trainings')

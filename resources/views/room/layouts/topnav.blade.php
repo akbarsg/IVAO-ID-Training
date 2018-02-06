@@ -12,6 +12,11 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li>
+                      <center>
+                        <img src="{{ $user->atcrating->image }}" alt="{{ $user->atcrating->name }}"> <img src="{{ $user->pilotrating->image }}" alt="{{ $user->pilotrating->name }}">
+                      </center>
+                    </li>
                     <li><a href="javascript:;"> Profile</a></li>
                     <li>
                       <a href="javascript:;">
@@ -68,14 +73,14 @@
                         </li>
                     @endforeach
                     
-                    <li>
+                    <!-- <li>
                       <div class="text-center">
                         <a>
                           <strong>See All Alerts</strong>
                           <i class="fa fa-angle-right"></i>
                         </a>
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </li>
               </ul>

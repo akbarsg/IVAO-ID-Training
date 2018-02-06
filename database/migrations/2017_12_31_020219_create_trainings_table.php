@@ -19,6 +19,7 @@ class CreateTrainingsTable extends Migration
             $table->integer('trainer_id')->unsigned();
             $table->string('note')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('request_id')
                 ->references('id')->on('requests')

@@ -14,10 +14,11 @@ use App\Training;
 use App\History;
 
 use Notification;
-use App\Notifications\TrainingAssigned;
+use App\Notifications\TrainingAssignedNotification;
 
 use Mail;
-use App\Mail\NewTrainingRequest;
+use App\Mail\TrainingRequested;
+use App\Mail\TrainingAssigned;
 
 
 class TrainingController extends Controller
@@ -34,27 +35,24 @@ class TrainingController extends Controller
 	}
 
 	public function dashboard(){
+		$request = '';
+		$requests = '';
+		$nextRating = '';
+		$status = '';
+		$user = Auth::user();
 		$count = RequestModel::where('trainee_id', Auth::user()->id)->count();
 		if ($count > 0) {
-
-			$user = Auth::user();
 			$request = RequestModel::where('trainee_id', $user->id)
 			->orderBy('created_at', 'desc')
 			->first();
-			// $pastRequests = RequestModel::where('trainee_id', $user->id)
-			// ->where('status', '>=', 3)
-			// ->get();
 			$requests = RequestModel::where('trainee_id', $user->id)
 			->orderBy('created_at', 'desc')
 			->get();
-
 			if ($request->type == 1) {
 				$nextRating = AtcRating::getNextRating()->name;
 			} else {
 				$nextRating = PilotRating::getNextRating()->name;
 			}
-
-
 
 			$status = array('Pending', 'Your request has not been reviewed yet. Please wait until a staff member assigned yours. You will be notified by email.', '#E65100');
 		// dd($status);
@@ -71,10 +69,19 @@ class TrainingController extends Controller
 				$status[1] = 'This training session has been finished!.';
 				$status[2] = '#01579B';
 			}
-			return view('dashboard', ['user' => $user, 'request' => $request, 'requests' => $requests, 'status' => $status, 'nextRating' => $nextRating]);
-		} else {
-			return redirect('/training');
 		}
+
+		
+
+			// $pastRequests = RequestModel::where('trainee_id', $user->id)
+			// ->where('status', '>=', 3)
+			// ->get();
+
+
+		return view('dashboard', ['user' => $user, 'request' => $request, 'requests' => $requests, 'status' => $status, 'nextRating' => $nextRating]);
+		// } else {
+		// 	return redirect('/training');
+		// }
 	}
 
 	public function storeRequest(Request $request)
@@ -82,11 +89,11 @@ class TrainingController extends Controller
 		$this->validate($request, [
 			'email' => 'required|email',
 			'type' => 'required|digits_between:1,2',
-	        'atc_rating_id' => 'required|digits_between:0,10',
-	        'pilot_rating_id' => 'required|digits_between:0,10',
-	        'training_time' => 'required',
-	        'note' => 'nullable|string',
-	    ]);
+			'atc_rating_id' => 'required|digits_between:0,10',
+			'pilot_rating_id' => 'required|digits_between:0,10',
+			'training_time' => 'required',
+			'note' => 'nullable|string',
+		]);
 
 		$requestModel = new RequestModel;
 		$requestModel->trainee_id = Auth::user()->id;
@@ -105,20 +112,24 @@ class TrainingController extends Controller
 			$user->save();
 		}
 
-		Mail::send(new NewTrainingRequest());
+		Mail::to($request->email)->bcc('id-tc@ivao.aero')->send(new TrainingRequested($requestModel));
 
-		return redirect('dashboard');
+		return redirect('dashboard')->with('success','You just request a training session succesfully.');
 	}
 
 	public function deleteRequest($id){
 		if (RequestModel::find($id)->status == 0) {
 			RequestModel::destroy($id);
-			if (RequestModel::where('trainee_id', Auth::user()->id)->count() > 0) {
-				return redirect('dashboard');
+			if (Auth::user()->isStaff == 0) {
+				if (RequestModel::where('trainee_id', Auth::user()->id)->count() > 0) {
+					return redirect('dashboard');
+				}
+				return redirect('training');
 			}
-			return redirect('training');
+			
+			
 		}
-		return redirect('dashboard');
+		return back();
 		
 	}
 
@@ -127,7 +138,7 @@ class TrainingController extends Controller
 		$this->validate($request, [
 			'request_id' => 'required|integer',
 			'note' => 'nullable|string',
-	    ]);
+		]);
 
 		$requestModel = RequestModel::find($request->request_id);
 		$requestModel->status = 1;
@@ -144,7 +155,9 @@ class TrainingController extends Controller
 
 		$user = User::find(1);
 		$training->trainee_name = User::find($requestModel->trainee_id)->name;
-		$user->notify(new TrainingAssigned($training));
+
+		$user->notify(new TrainingAssignedNotification($training));
+		Mail::to($requestModel->user->email)->send(new TrainingAssigned($training));
 		
 
 		return back()->with('success','You just assign yourself as the trainer!');
@@ -169,7 +182,7 @@ class TrainingController extends Controller
 		$this->validate($request, [
 			'training_id' => 'required|integer',
 			'description' => 'nullable|string',
-	    ]);
+		]);
 
 		$request_id = Training::find($request->training_id)
 		->request
@@ -212,5 +225,19 @@ class TrainingController extends Controller
 		$user = Auth::user();
 
 		return view('room.trainingpendinglist', ['requests' => $requests, 'user' => $user]);
+	}
+
+	public function deleteTraining($id)
+	{
+		$request_id = Training::find($id)->request_id;
+		if (Training::find($id)->request->status == 3) {
+			$history_id = History::where('training_id', $id)->first()->id;
+			History::destroy($history_id);
+		}
+		
+		Training::destroy($id);
+		RequestModel::destroy($request_id);
+
+		return back()->with('success','You just delete the training!');
 	}
 }

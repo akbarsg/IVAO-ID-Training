@@ -24,6 +24,7 @@ class CreateRequestsTable extends Migration
             $table->string('note')->nullable();
             $table->integer('status')->default(0)->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('trainee_id')
                 ->references('id')->on('users')

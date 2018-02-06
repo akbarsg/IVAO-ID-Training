@@ -12,11 +12,17 @@ use App\Training;
 
 class UserController extends Controller
 {
+    private $user;
     
+    public function __construct()
+    {
+        // dd($training);
+        $this->user = Auth::user();
+    }
 
     public function showAll()
     {
-    	$users = User::all();
+    	$users = User::orderBy('isStaff', 'desc')->get();
     	$user = Auth::user();
 
     	return view('room.users', ['users' => $users, 'user' => $user]);
@@ -50,5 +56,51 @@ class UserController extends Controller
     	// dd($requests[0]->training);
 
     	return view('room.profile', ['profile' => $profile, 'user' => $user, 'requests' => $requests, 'trainings' => $trainings]);
+    }
+
+    public function setstaffemail(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'confirm_email' => 'required|email',
+        ]);
+
+        if ($request->email == $request->confirm_email) {
+            $user = User::find(Auth::user()->id);
+            $user->staff_email = $request->email;
+            $user->save();
+
+            return redirect('room');
+        } else {
+            return back();
+        }
+    }
+
+    public function assignasstaff($id)
+    {
+        $user = User::find(Auth::user()->id);
+        if ($user->staff == 'ID-TC' || $user->staff == 'ID-TAC' || $user->staff == 'ID-WM' || $user->staff == 'ID-AWM' || $user->staff == 'ID-DIR' || $user->staff == 'ID-ADIR') {
+            $newstaff = User::find($id);
+            $newstaff->isStaff = 1;
+            $newstaff->save();
+
+            return back()->with('success','You just assigned an user as a staff!');
+        } else {
+            return back()->with('error','You are not eligible to assign an user as a staff!');
+        }
+    }
+
+    public function unassignasstaff($id)
+    {
+        $user = User::find(Auth::user()->id);
+        if ($user->staff == 'ID-TC' || $user->staff == 'ID-TAC' || $user->staff == 'ID-WM' || $user->staff == 'ID-AWM' || $user->staff == 'ID-DIR' || $user->staff == 'ID-ADIR') {
+            $staff = User::find($id);
+            $staff->isStaff = 0;
+            $staff->save();
+
+            return back()->with('success','You just unassigned an user as a staff!');
+        } else {
+            return back()->with('error','You are not eligible to unassign an user as a staff!');
+        }
     }
 }

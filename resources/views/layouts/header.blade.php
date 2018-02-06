@@ -11,9 +11,9 @@
             <!-- /responsive nav button -->
 
             <!-- logo -->
-            <div class="navbar-brand">
-                <a href="index.html" >
-                    <img src="#" alt="">
+            <div class="navbar-brand" style="padding-top: 0">
+                <a href="/" style="display: initial">
+                    <img src="images/IVAO-ID-50.png" alt="IVAO ID Logo">
                 </a>
             </div>
             <!-- /logo -->
@@ -22,33 +22,31 @@
         <nav class="collapse navbar-collapse navbar-right" role="navigation">
             <div class="main-menu">
                 <ul class="nav navbar-nav navbar-right">
+                    @if(Auth::guest())
                     <li>
-                        <a href="/" >Beranda</a>
+                        <a href="/" >Home</a>
                     </li>
-                    <!-- <li><a href="about.html">IVAO ID</a></li> -->
-                    
+                    @endif
+                    @if (Auth::check())
+                    <li><a href="/dashboard">Dashboard</a></li>      
+                    <li><a href="/training">Request</a></li>              
+                    @endif
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <span class="caret"></span></a>
                         <div class="dropdown-menu">
                             <ul>
-                                <li><a href="documents.html">Documents</a></li>
-                                <li><a href="news.html">News</a></li>
-                                <li><a href="softwares.html">Softwares</a></li>
+                                <li><a href="#">Documents</a></li>
+                                <li><a href="#">News</a></li>
+                                <li><a href="#">Softwares</a></li>
                             </ul>
                         </div>
                     </li>
-                    <!-- <li><a href="/training">Training</a></li> -->
-
-                    <!-- <li><a href="contact.html">Contact</a></li> -->
                     @if (Auth::guest())
                     <li><a href="{{ route('login') }}">Login</a></li>
-                    <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                     @else
                     <!-- <li><a href="{{ route('home') }}">Dashboard</a></li> -->
-                    <li><a href="/training">Request</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
                     @if(Auth::user()->isStaff == 1)
-                    <li><a href="/room">Trainer Room</a></li>
+                    <li><a href="/room">Staff</a></li>
                     @endif
                     <li>
                         <a href="{{ route('logout') }}"
